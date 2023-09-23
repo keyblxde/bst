@@ -2,20 +2,11 @@
 
 Tree::Tree() = default;
 
+Tree::~Tree() = default;
+
 Tree::Tree(const Tree& tree) : root(nullptr), height(0) {
   copyTree(this->root, tree.root);
   this->height = tree.height;
-}
-
-Tree::~Tree() {
-  while (this->root) {
-    deleteNode(this, this->root);
-  }
-}
-
-Tree::Tree(Tree&& tree) noexcept: root(tree.root), height(tree.height) {
-  tree.root = nullptr;
-  tree.height = 0;
 }
 
 void Tree::copyTree(TreeNode*& destNode, const TreeNode* srcNode) {
@@ -57,24 +48,6 @@ Tree& Tree::operator=(const Tree& rhs) {
       this->root = nullptr;
       this->height = 0;
     }
-  }
-
-  return *this;
-}
-
-Tree& Tree::operator=(Tree&& rhs) noexcept {
-  if (this != &rhs) {
-    while (this->root) {
-      deleteNode(this, this->root);
-    }
-
-    // Steal resources from rhs
-    this->root = rhs.root;
-    this->height = rhs.height;
-
-    // Reset rhs
-    rhs.root = nullptr;
-    rhs.height = 0;
   }
 
   return *this;

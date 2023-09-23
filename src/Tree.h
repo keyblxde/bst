@@ -21,17 +21,11 @@ class Tree {
  public:
   Tree();
 
-  Tree(const Tree& tree); // Copy constructor (Rule of Five)
+  ~Tree(); // Destructor (Rule of Three)
 
-  Tree(Tree&& tree) noexcept; // // Move constructor using rvalue reference (Rule of Five)
+  Tree(const Tree& tree); // Copy constructor (Rule of Three)
 
-  ~Tree(); // Destructor (Rule of Five)
-
-  void copyTree(TreeNode*& destNode, const TreeNode* srcNode); // Helper for assignment operators
-
-  Tree& operator=(Tree&& rhs) noexcept; // Move assignment operator (Rule of Five)
-
-  Tree& operator=(const Tree& rhs); // Copy assignment operator (Rule of Five)
+  Tree& operator=(const Tree& rhs); // Copy assignment operator (Rule of Three)
 
   TreeNode* getRoot();
 
@@ -51,11 +45,13 @@ class Tree {
 
   void deleteNode(Tree* tree, TreeNode* node);
 
-  void shiftNodes(Tree* tree, TreeNode* curr, TreeNode* next); // Helper for deleteNode()
-
  private:
   TreeNode* root = nullptr;
   int height = 0;
+
+  void copyTree(TreeNode*& destNode, const TreeNode* srcNode); // Helper for assignment operators
+
+  void shiftNodes(Tree* tree, TreeNode* curr, TreeNode* next); // Helper for deleteNode()
 };
 
 #endif // BST_TREE_H

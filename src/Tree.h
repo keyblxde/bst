@@ -3,55 +3,59 @@
 
 #include <iostream>
 
-
 struct TreeNode {
-    int key;
-    TreeNode* parent;
-    TreeNode* left;
-    TreeNode* right;
+  int key;
+  TreeNode* parent;
+  TreeNode* left;
+  TreeNode* right;
 
-    explicit TreeNode(int num) {
-        key = num;
-        parent = nullptr;
-        left = nullptr;
-        right = nullptr;
-    }
+  explicit TreeNode(int num) {
+    key = num;
+    parent = nullptr;
+    left = nullptr;
+    right = nullptr;
+  }
 };
 
 class Tree {
-public:
-    Tree();
+ public:
+  Tree();
 
-    ~Tree();
+  Tree(const Tree& tree); // Copy constructor (Rule of Five)
 
-    Tree& operator=(const Tree& rhs);
+  Tree(Tree&& tree) noexcept; // // Move constructor using rvalue reference (Rule of Five)
 
-    TreeNode* getRoot();
+  ~Tree(); // Destructor (Rule of Five)
 
-    int getHeight() const;
+  void copyTree(TreeNode*& destNode, const TreeNode* srcNode); // Helper for assignment operators
 
-    TreeNode* findKey(TreeNode* node, int key);
+  Tree& operator=(Tree&& rhs) noexcept; // Move assignment operator (Rule of Five)
 
-    TreeNode* findMin(TreeNode* node);
+  Tree& operator=(const Tree& rhs); // Copy assignment operator (Rule of Five)
 
-    TreeNode* findMax(TreeNode* node);
+  TreeNode* getRoot();
 
-    TreeNode* findSuccessor(TreeNode* node);
+  int getHeight() const;
 
-    TreeNode* findPredecessor(TreeNode* node);
+  TreeNode* findKey(TreeNode* node, int key);
 
-    void insertNode(Tree* tree, TreeNode* node);
+  TreeNode* findMin(TreeNode* node);
 
-    void deleteNode(Tree* tree, TreeNode* node);
+  TreeNode* findMax(TreeNode* node);
 
-private:
-    TreeNode* root = nullptr;
-    int height = 0;
+  TreeNode* findPredecessor(TreeNode* node); // Returns the node with the largest key < than provided node
 
-    void shiftNodes(Tree* tree, TreeNode* curr, TreeNode* next);
+  TreeNode* findSuccessor(TreeNode* node); // Returns the node with the smallest key > than provided node
 
-    void copyTree(TreeNode*& destNode, const TreeNode* srcNode);
+  void insertNode(Tree* tree, TreeNode* node);
+
+  void deleteNode(Tree* tree, TreeNode* node);
+
+  void shiftNodes(Tree* tree, TreeNode* curr, TreeNode* next); // Helper for deleteNode()
+
+ private:
+  TreeNode* root = nullptr;
+  int height = 0;
 };
-
 
 #endif // BST_TREE_H
